@@ -27,5 +27,35 @@
         "file": "contracts/review/IterableMapping.sol"
       }
     }
+  },
+  "contracts/review/DataLocations.sol": {
+    "__sources__": {
+      "contracts/review/DataLocations.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\n\n// storage\n// memory\n// calldata\ncontract DataLoactions {\n    struct MyStruct {\n        uint foo;\n        string text;\n    }\n\n    mapping(address => MyStruct) myStructs;\n\n    function examples() external returns (uint) {\n        myStructs[msg.sender] = MyStruct({foo: 123, text: \"bar\"});\n        \n        MyStruct storage mystruct = myStructs[msg.sender];\n        mystruct.text = \"foo\";\n\n\n\n        return myStructs[msg.sender].foo;\n    }\n}\n",
+        "file": "contracts/review/DataLocations.sol"
+      }
+    }
+  },
+  "contracts/review/simpleS.sol": {
+    "__sources__": {}
+  },
+  "contracts/review/SimpleStarege.sol": {
+    "__sources__": {}
+  },
+  "contracts/review/SimpleStorege.sol": {
+    "__sources__": {
+      "contracts/review/SimpleStorege.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\n\ncontract SimpleStorage {\n    string public text;\n\n    function set(string calldata _text) external {\n        text = _text;\n    }\n\n    function get() external view returns (string memory) {\n        return text;\n    }\n}\n",
+        "file": "contracts/review/SimpleStorege.sol"
+      }
+    }
+  },
+  "contracts/new/0523TodoList.sol": {
+    "__sources__": {
+      "contracts/new/0523TodoList.sol": {
+        "content": "// SPDX-License-Identifier: MIT\n// 合约状态变量 → 自动是 storage\n// external 函数参数 → 必须用 calldata（最省 Gas）\n// 函数内部临时变量 → 用 memory\n// 想修改状态变量 → 用 storage 指针\n\npragma solidity 0.8.23;\ncontract TodoList {\n    struct Todo {\n        string text;\n        bool completed;\n    }\n\n    Todo[] public todoList;\n    //创建待办\n    function create(string calldata _text) external {\n        todoList.push(Todo({text: _text, completed: false}));\n    }\n    //完成任务\n    function completeTodo(uint _index) external {\n        require(_index < todoList.length, \"transfinite \");\n        todoList[_index].completed = true;\n    }\n\n    function updateText(uint _index, string calldata _text) external {\n        //单个字段直接修改省Gas\n        todoList[_index].text = _text;\n\n        //多个字段\n        //  Todo storage todo = todoList[_index];\n        //  todo.text = _text;\n    }\n\n    //根据下标获取待办\n    function get(uint _index) external view returns (Todo memory) {\n        Todo memory todo = todoList[_index];\n        return todo;\n    }\n}\n",
+        "file": "contracts/new/0523TodoList.sol"
+      }
+    }
   }
 }

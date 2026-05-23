@@ -1,0 +1,59 @@
+{
+	"compiler": {
+		"version": "0.8.23+commit.f704f362"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "examples",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/review/DataLocations.sol": "DataLoactions"
+		},
+		"evmVersion": "shanghai",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/review/DataLocations.sol": {
+			"keccak256": "0x314ffb9e5100a09c122da6db5456e918d2304d2d6716bf862a7dfb84e33bd205",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8fe4102e345b97d8c36901c0c0a13bfdd9c62e9a395be4a9e5cc1720c437113f",
+				"dweb:/ipfs/QmSfhbequjDUCySbSNPysGZDNNh3ycZGfU7QLmnsDwVyz1"
+			]
+		}
+	},
+	"version": 1
+}
