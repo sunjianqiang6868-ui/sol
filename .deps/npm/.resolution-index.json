@@ -57,5 +57,40 @@
         "file": "contracts/new/0523TodoList.sol"
       }
     }
+  },
+  "contracts/new/0523Event.sol": {
+    "__sources__": {
+      "contracts/new/0523Event.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\ncontract Event {\n    event Log(string message, uint val);\n    event IndexedLog(address indexed sender, uint val);\n\n    function example(string calldata _message, uint _val) external {\n        emit Log(_message, _val);\n        emit IndexedLog(msg.sender, _val);\n    }\n\n    event Message(address indexed _from, address indexed _to, string _val);\n\n    function sendMsg(address _to, string calldata _message) external {\n        emit Message(msg.sender, _to, _message);\n    }\n}\n",
+        "file": "contracts/new/0523Event.sol"
+      }
+    }
+  },
+  "contracts/new/0524Virtual.sol": {
+    "__sources__": {
+      "contracts/new/0524Virtual.sol": {
+        "content": "// SPDX-License-Identifier: MIT\n//  B is A B继承A的所有方法\n\n// virtual 关键字\n// 用于继承\n// 允许子合约重写函数\n// 必须配合 override 使用\npragma solidity 0.8.23;\ncontract A {\n    function foo() external pure virtual returns (string memory) {\n        return \"A_foo\";\n    }\n    function bar() external pure returns (string memory) {\n        return \"A_bar\";\n    }\n}\ncontract B is A {\n    function foo() external pure override returns (string memory) {\n        return \"B_foo\";\n    }\n}\n",
+        "file": "contracts/new/0524Virtual.sol"
+      }
+    }
+  },
+  "contracts/new/0524VirtualLevel.sol": {
+    "__sources__": {
+      "contracts/new/0524VirtualLevel.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\n// 多层继承关系\n\ncontract A {\n    function foo() external pure virtual returns (string memory) {\n        return \"A_foo\";\n    }\n    function barA() external pure returns (string memory) {\n        return \"A_barA\";\n    }\n}\n\ncontract B is A {\n    function foo() external pure virtual override returns (string memory) {\n        return \"B_foo\";\n    }\n    function barB() external pure returns (string memory) {\n        return \"B_barB\";\n    }\n}\n\ncontract C is A, B {\n    function foo() external pure override(A, B) returns (string memory) {\n        return \"C_foo\";\n    }\n}\n",
+        "file": "contracts/new/0524VirtualLevel.sol"
+      }
+    }
+  },
+  "contracts/new/0524VirtualCon.sol": {
+    "__sources__": {}
+  },
+  "contracts/new/0524VirtualConstructor.sol": {
+    "__sources__": {
+      "contracts/new/0524VirtualConstructor.sol": {
+        "content": "// SPDX-License-Identifier: MIT\n\n// 继承-调用父类的构造函数 ,以及它们的执行顺序\npragma solidity 0.8.23;\n\ncontract P {\n    event Log(string message);\n}\ncontract D is P {\n    constructor() {\n        emit Log(\"this is D\"); // unicode\n    }\n}\ncontract E is D {\n    string public name;\n    constructor(string memory _name) {\n        emit Log(\"this is E; name= \"); // unicode\n        emit Log(_name);\n        name = _name;\n    }\n}\ncontract G is P {\n    constructor() {\n        emit Log(\"this is G\"); // unicode\n    }\n}\n\n// NO.1\ncontract F is D, E(\"abc\") {\n    string public text;\n    constructor(string memory _text) D() {\n        emit Log(\"this is F\");\n        text = _text;\n    }\n}\n\n// NO.2 继承是有顺序的\n// FV2 是 D, E 顺序 → 符合线性化规则 ✅\n// FV2 是 E, D 顺序 → 破坏了线性化规则 ❌\ncontract FV2 is D, E {\n    string public text;\n    constructor(string memory _name, string memory _text) D() E(_name) {\n        emit Log(\"this is FV2\");\n        text = _text;\n    }\n}\n\n// NO.3 继承顺序决定 构造函数初始化顺序\ncontract FV3 is E, G {\n    string public text;\n    constructor(string memory _name, string memory _text) G() E(_name) {\n        emit Log(\"this is FV3\");\n        text = _text;\n    }\n}\n\ncontract FV4 is G, E {\n    string public text;\n    constructor(string memory _name, string memory _text) G() E(_name) {\n        emit Log(\"this is FV4\");\n        text = _text;\n    }\n}\n",
+        "file": "contracts/new/0524VirtualConstructor.sol"
+      }
+    }
   }
 }
