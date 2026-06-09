@@ -58,27 +58,11 @@
       }
     }
   },
-  "contracts/new/0523Event.sol": {
-    "__sources__": {
-      "contracts/new/0523Event.sol": {
-        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\ncontract Event {\n    event Log(string message, uint val);\n    event IndexedLog(address indexed sender, uint val);\n\n    function example(string calldata _message, uint _val) external {\n        emit Log(_message, _val);\n        emit IndexedLog(msg.sender, _val);\n    }\n\n    event Message(address indexed _from, address indexed _to, string _val);\n\n    function sendMsg(address _to, string calldata _message) external {\n        emit Message(msg.sender, _to, _message);\n    }\n}\n",
-        "file": "contracts/new/0523Event.sol"
-      }
-    }
-  },
   "contracts/new/0524Virtual.sol": {
     "__sources__": {
       "contracts/new/0524Virtual.sol": {
         "content": "// SPDX-License-Identifier: MIT\n//  B is A B继承A的所有方法\n\n// virtual 关键字\n// 用于继承\n// 允许子合约重写函数\n// 必须配合 override 使用\npragma solidity 0.8.23;\ncontract A {\n    function foo() external pure virtual returns (string memory) {\n        return \"A_foo\";\n    }\n    function bar() external pure returns (string memory) {\n        return \"A_bar\";\n    }\n}\ncontract B is A {\n    function foo() external pure override returns (string memory) {\n        return \"B_foo\";\n    }\n}\n",
         "file": "contracts/new/0524Virtual.sol"
-      }
-    }
-  },
-  "contracts/new/0524VirtualLevel.sol": {
-    "__sources__": {
-      "contracts/new/0524VirtualLevel.sol": {
-        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\n// 多层继承关系\n\ncontract A {\n    function foo() external pure virtual returns (string memory) {\n        return \"A_foo\";\n    }\n    function barA() external pure returns (string memory) {\n        return \"A_barA\";\n    }\n}\n\ncontract B is A {\n    function foo() external pure virtual override returns (string memory) {\n        return \"B_foo\";\n    }\n    function barB() external pure returns (string memory) {\n        return \"B_barB\";\n    }\n}\n\ncontract C is A, B {\n    function foo() external pure override(A, B) returns (string memory) {\n        return \"C_foo\";\n    }\n}\n",
-        "file": "contracts/new/0524VirtualLevel.sol"
       }
     }
   },
@@ -90,6 +74,170 @@
       "contracts/new/0524VirtualConstructor.sol": {
         "content": "// SPDX-License-Identifier: MIT\n\n// 继承-调用父类的构造函数 ,以及它们的执行顺序\npragma solidity 0.8.23;\n\ncontract P {\n    event Log(string message);\n}\ncontract D is P {\n    constructor() {\n        emit Log(\"this is D\"); // unicode\n    }\n}\ncontract E is D {\n    string public name;\n    constructor(string memory _name) {\n        emit Log(\"this is E; name= \"); // unicode\n        emit Log(_name);\n        name = _name;\n    }\n}\ncontract G is P {\n    constructor() {\n        emit Log(\"this is G\"); // unicode\n    }\n}\n\n// NO.1\ncontract F is D, E(\"abc\") {\n    string public text;\n    constructor(string memory _text) D() {\n        emit Log(\"this is F\");\n        text = _text;\n    }\n}\n\n// NO.2 继承是有顺序的\n// FV2 是 D, E 顺序 → 符合线性化规则 ✅\n// FV2 是 E, D 顺序 → 破坏了线性化规则 ❌\ncontract FV2 is D, E {\n    string public text;\n    constructor(string memory _name, string memory _text) D() E(_name) {\n        emit Log(\"this is FV2\");\n        text = _text;\n    }\n}\n\n// NO.3 继承顺序决定 构造函数初始化顺序\ncontract FV3 is E, G {\n    string public text;\n    constructor(string memory _name, string memory _text) G() E(_name) {\n        emit Log(\"this is FV3\");\n        text = _text;\n    }\n}\n\ncontract FV4 is G, E {\n    string public text;\n    constructor(string memory _name, string memory _text) G() E(_name) {\n        emit Log(\"this is FV4\");\n        text = _text;\n    }\n}\n",
         "file": "contracts/new/0524VirtualConstructor.sol"
+      }
+    }
+  },
+  "contracts/new/0524VirtualLevel.sol": {
+    "__sources__": {
+      "contracts/new/0524VirtualLevel.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\n// 多层继承关系\n\ncontract A {\n    function foo() external pure virtual returns (string memory) {\n        return \"A_foo\";\n    }\n    function barA() external pure returns (string memory) {\n        return \"A_barA\";\n    }\n}\n\ncontract B is A {\n    function foo() external pure virtual override returns (string memory) {\n        return \"B_foo\";\n    }\n    function barB() external pure returns (string memory) {\n        return \"B_barB\";\n    }\n}\n\ncontract C is A, B {\n    function foo() external pure override(A, B) returns (string memory) {\n        return \"C_foo\";\n    }\n}\n",
+        "file": "contracts/new/0524VirtualLevel.sol"
+      }
+    }
+  },
+  "contracts/new/0523Event.sol": {
+    "__sources__": {
+      "contracts/new/0523Event.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\ncontract Event {\n    event Log(string message, uint val);\n    event IndexedLog(address indexed sender, uint val);\n\n    function example(string calldata _message, uint _val) external {\n        emit Log(_message, _val);\n        emit IndexedLog(msg.sender, _val);\n    }\n\n    event Message(address indexed _from, address indexed _to, string _val);\n\n    function sendMsg(address _to, string calldata _message) external {\n        emit Message(msg.sender, _to, _message);\n    }\n}\n",
+        "file": "contracts/new/0523Event.sol"
+      }
+    }
+  },
+  "contracts/0523/0523TodoList.sol": {
+    "__sources__": {
+      "contracts/0523/0523TodoList.sol": {
+        "content": "// SPDX-License-Identifier: MIT\n// 合约状态变量 → 自动是 storage\n// external 函数参数 → 必须用 calldata（最省 Gas）\n// 函数内部临时变量 → 用 memory\n// 想修改状态变量 → 用 storage 指针\n\npragma solidity 0.8.23;\ncontract TodoList {\n    struct Todo {\n        string text;\n        bool completed;\n    }\n\n    Todo[] public todoList;\n    //创建待办\n    function create(string calldata _text) external {\n        todoList.push(Todo({text: _text, completed: false}));\n    }\n    //完成任务\n    function completeTodo(uint _index) external {\n        require(_index < todoList.length, \"transfinite \");\n        todoList[_index].completed = true;\n    }\n\n    function updateText(uint _index, string calldata _text) external {\n        //单个字段直接修改省Gas\n        todoList[_index].text = _text;\n\n        //多个字段\n        //  Todo storage todo = todoList[_index];\n        //  todo.text = _text;\n    }\n\n    //根据下标获取待办\n    function get(uint _index) external view returns (Todo memory) {\n        Todo memory todo = todoList[_index];\n        return todo;\n    }\n}\n",
+        "file": "contracts/0523/0523TodoList.sol"
+      }
+    }
+  },
+  "contracts/0523/0523Event.sol": {
+    "__sources__": {
+      "contracts/0523/0523Event.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\ncontract Event {\n    event Log(string message, uint val);\n    event IndexedLog(address indexed sender, uint val);\n\n    function example(string calldata _message, uint _val) external {\n        emit Log(_message, _val);\n        emit IndexedLog(msg.sender, _val);\n    }\n\n    event Message(address indexed _from, address indexed _to, string _val);\n\n    function sendMsg(address _to, string calldata _message) external {\n        emit Message(msg.sender, _to, _message);\n    }\n}\n",
+        "file": "contracts/0523/0523Event.sol"
+      }
+    }
+  },
+  "contracts/0523/0524Virtual.sol": {
+    "__sources__": {
+      "contracts/0523/0524Virtual.sol": {
+        "content": "// SPDX-License-Identifier: MIT\n//  B is A B继承A的所有方法\n\n// virtual 关键字\n// 用于继承\n// 允许子合约重写函数\n// 必须配合 override 使用\npragma solidity 0.8.23;\ncontract A {\n    function foo() external pure virtual returns (string memory) {\n        return \"A_foo\";\n    }\n    function bar() external pure returns (string memory) {\n        return \"A_bar\";\n    }\n}\ncontract B is A {\n    function foo() external pure override returns (string memory) {\n        return \"B_foo\";\n    }\n}\n",
+        "file": "contracts/0523/0524Virtual.sol"
+      }
+    }
+  },
+  "contracts/0523/0524VirtualConstructor.sol": {
+    "__sources__": {
+      "contracts/0523/0524VirtualConstructor.sol": {
+        "content": "// SPDX-License-Identifier: MIT\n\n// 继承-调用父类的构造函数 ,以及它们的执行顺序\npragma solidity 0.8.23;\n\ncontract P {\n    event Log(string message);\n}\ncontract D is P {\n    constructor() {\n        emit Log(\"this is D\"); // unicode\n    }\n}\ncontract E is D {\n    string public name;\n    constructor(string memory _name) {\n        emit Log(\"this is E; name= \"); // unicode\n        emit Log(_name);\n        name = _name;\n    }\n}\ncontract G is P {\n    constructor() {\n        emit Log(\"this is G\"); // unicode\n    }\n}\n\n// NO.1\ncontract F is D, E(\"abc\") {\n    string public text;\n    constructor(string memory _text) D() {\n        emit Log(\"this is F\");\n        text = _text;\n    }\n}\n\n// NO.2 继承是有顺序的\n// FV2 是 D, E 顺序 → 符合线性化规则 ✅\n// FV2 是 E, D 顺序 → 破坏了线性化规则 ❌\ncontract FV2 is D, E {\n    string public text;\n    constructor(string memory _name, string memory _text) D() E(_name) {\n        emit Log(\"this is FV2\");\n        text = _text;\n    }\n}\n\n// NO.3 继承顺序决定 构造函数初始化顺序\ncontract FV3 is E, G {\n    string public text;\n    constructor(string memory _name, string memory _text) G() E(_name) {\n        emit Log(\"this is FV3\");\n        text = _text;\n    }\n}\n\ncontract FV4 is G, E {\n    string public text;\n    constructor(string memory _name, string memory _text) G() E(_name) {\n        emit Log(\"this is FV4\");\n        text = _text;\n    }\n}\n",
+        "file": "contracts/0523/0524VirtualConstructor.sol"
+      }
+    }
+  },
+  "contracts/0523/0524VirtualLevel.sol": {
+    "__sources__": {
+      "contracts/0523/0524VirtualLevel.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\n// 多层继承关系\n\ncontract A {\n    function foo() external pure virtual returns (string memory) {\n        return \"A_foo\";\n    }\n    function barA() external pure returns (string memory) {\n        return \"A_barA\";\n    }\n}\n\ncontract B is A {\n    function foo() external pure virtual override returns (string memory) {\n        return \"B_foo\";\n    }\n    function barB() external pure returns (string memory) {\n        return \"B_barB\";\n    }\n}\n\ncontract C is A, B {\n    function foo() external pure override(A, B) returns (string memory) {\n        return \"C_foo\";\n    }\n}\n",
+        "file": "contracts/0523/0524VirtualLevel.sol"
+      }
+    }
+  },
+  "contracts/0523/ParentVirtual.sol": {
+    "__sources__": {
+      "contracts/0523/ParentVirtual.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\n// 调用父级方法\n\n//     E\n//     /\\\n//    F  G\n//     \\/\n//     H\n\ncontract E {\n    event Log(string message);\n    function foo() public virtual {\n        emit Log(\"E.foo\");\n    }\n\n    function bar() public virtual {\n        emit Log(\"E.bar\");\n    }\n}\n\n// 继承 E 重写两个方法\ncontract F is E {\n    function foo() public virtual override {\n        emit Log(\"F.foo\");\n        E.foo();\n    }\n\n    function bar() public virtual override {\n        emit Log(\"F.bar\");\n        super.bar();\n    }\n}\n\n// 继承 E 重写两个方法\ncontract G is E {\n    function foo() public virtual override {\n        emit Log(\"G.foo\");\n        E.foo();\n    }\n\n    function bar() public virtual override {\n        emit Log(\"G.bar\");\n        super.bar();\n    }\n}\n\n// 继承 E 重写两个方法\ncontract H is F, G {\n    function foo() public override(F, G) {\n        emit Log(\"H.foo\");\n        F.foo();\n    }\n\n    function bar() public override(F, G) {\n        emit Log(\"H.bar\");\n        super.bar();\n    }\n}\n",
+        "file": "contracts/0523/ParentVirtual.sol"
+      }
+    }
+  },
+  "contracts/0607/Immtable.sol": {
+    "__sources__": {}
+  },
+  "contracts/三W金融支付/Ethw.sol": {
+    "__sources__": {}
+  },
+  "contracts/三W金融支付/CallerReciver.sol": {
+    "__sources__": {}
+  },
+  "contracts/三W金融支付/EtherWallet.sol": {
+    "__sources__": {
+      "contracts/三W金融支付/EtherWallet.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\n\ncontract EtherWallet {\n    address payable public owner;\n\n    constructor() {\n        owner = payable(msg.sender);\n    }\n\n    receive() external payable {}\n\n    // 提现到钱包\n    function withdraw(uint _amount) external payable {\n        require(msg.sender == owner, \" caller is not owner\");\n        payable(msg.sender).transfer(_amount);\n    }\n\n    // 查余额\n    function getBalance() external view returns (uint) {\n        return address(this).balance;\n    }\n}\n",
+        "file": "contracts/三W金融支付/EtherWallet.sol"
+      }
+    }
+  },
+  "contracts/三W高级合约交互/Test.sol": {
+    "__sources__": {}
+  },
+  "contracts/三W高级合约交互/TestCounter.sol": {
+    "__sources__": {
+      "contracts/三W高级合约交互/TestCounter.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\ncontract Counter {\n    uint public count;\n\n    function increment() external {\n        count += 1;\n    }\n}\n",
+        "file": "contracts/三W高级合约交互/TestCounter.sol"
+      }
+    }
+  },
+  "contracts/三W高级合约交互/MyContract.sol": {
+    "__sources__": {
+      "contracts/三W高级合约交互/MyContract.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\n\n// 通过结构调用其他合约\n\ninterface ITestCounter {\n    function count() external view returns (uint);\n    function increment() external;\n}\n\ncontract MyContract {\n    // get\n    function getCount(ITestCounter _target) external view returns (uint) {\n        return _target.count();\n    }\n\n    // increment\n    function toIncrement(address _target) external {\n        ITestCounter(_target).increment();\n    }\n}\n",
+        "file": "contracts/三W高级合约交互/MyContract.sol"
+      }
+    }
+  },
+  "contracts/0607/Immutable.sol": {
+    "__sources__": {
+      "contracts/0607/Immutable.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\ncontract Immutable {\n    address public owner;\n    uint public x;\n\n    // 构造函数：只能在这里赋值一次\n    constructor() {\n        owner = msg.sender;\n    }\n    function foo() external {\n        require(msg.sender == owner);\n        x += 1;\n    }\n}\n",
+        "file": "contracts/0607/Immutable.sol"
+      }
+    }
+  },
+  "contracts/0607/Fullback.sol": {
+    "__sources__": {
+      "contracts/0607/Fullback.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\n\n// receive = 只收钱，不调用函数\n// fallback = 调用函数，但找不到\n\n// receive()：专门收 ETH 的函数（无数据、纯转账）\n// fallback()：兜底函数（调用了不存在的方法 或 发 ETH 带数据）\n\n// 1. receive()满足 2 个条件就触发：\n// 向合约转 ETH\n// 不带任何数据（空 data）\n\n// 2. fallback()满足任一条件就触发：\n// 调用了合约里没有的函数\n// 转 ETH 带了数据\n\n// ✅ receive()\n// 必须：external payable\n// 不能有：function 关键字、参数、返回值\n// 一个合约最多 1 个\n// ✅ fallback()\n// 必须：external\n// 可加：payable（能收钱）\n// 一个合约最多 1 个\n\ncontract Fallback {\n    event Log(string func, address sender, uint val, bytes data);\n\n    fallback() external payable {\n        emit Log(\"fallback\", msg.sender, msg.value, msg.data);\n    }\n\n    receive() external payable {\n        emit Log(\"receive\", msg.sender, msg.value, \"\");\n    }\n\n    // 调用存在的函数哪个都不触发\n    function deposit() external payable {}\n}\n",
+        "file": "contracts/0607/Fullback.sol"
+      }
+    }
+  },
+  "contracts/0607/Payable.sol": {
+    "__sources__": {
+      "contracts/0607/Payable.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\n// 可以支付ETH\ncontract Payable {\n    // 可以\n    address payable public owner;\n    constructor() {\n        // 转为 payable\n        owner = payable(msg.sender);\n    }\n\n    // 支付\n    function deposit() external payable {}\n\n    // 查询\n    function getBalance() external view returns (uint) {\n        return address(this).balance;\n    }\n}\n",
+        "file": "contracts/0607/Payable.sol"
+      }
+    }
+  },
+  "contracts/0607/Visbility.sol": {
+    "__sources__": {
+      "contracts/0607/Visbility.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\n\n// 可见性-关键字-\n// privite  合约内部-作用范围函数和变量\n// internal 合约内部和子合约-作用范围函数和变量\n// public   合约内部外部-作用范围函数和变量\n// external 只语序外部调用-作用范围函数\n\n// history\n// pure => 适用场景=纯计算、工具函数\n// view => 适用场景=状态查询、只读视图\n// payable => 适用场景=唯一能接收 ETH 的修饰符,可以改状态、读状态\n\ncontract Base {\n    uint private x = 1;\n    uint public y = 2;\n    uint internal z = 3;\n\n    function privFun() private pure returns (uint) {\n        return 100;\n    }\n    function pubFun() public pure returns (uint) {\n        return 200;\n    }\n    function interFun() internal pure returns (uint) {\n        return 300;\n    }\n    function exterFun() external pure returns (uint) {\n        return 400;\n    }\n\n    function examples() external view {\n        //变量可在本合约内调用\n        x + y + x;\n        privFun();\n        pubFun();\n        interFun();\n        // external 只允许外部调用\n        // exterFun();\n    }\n}\n\ncontract Child is Base {\n    function examples2() external view {\n        y + z;\n        // private 只允许内部调用\n        // privFun();\n        pubFun();\n        interFun();\n        // external 只允许外部调用\n        // exterFun();\n    }\n}\n",
+        "file": "contracts/0607/Visbility.sol"
+      }
+    }
+  },
+  "contracts/三W金融支付/CallerReceiver.sol": {
+    "__sources__": {
+      "contracts/三W金融支付/CallerReceiver.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\n\n// 合约调用\n\ncontract Caller {\n    // 指定调用的合约地址\n    function setX(Receiver _to, uint _x) external returns (uint256) {\n        return _to.setX(_x);\n    }\n\n    // 调用getx address 转 Receiver 再调用\n    function getX(address _to) external view returns (uint256 x) {\n        x = Receiver(_to).getX();\n    }\n\n    // 发送ETH\n    function setXAndSendEther(Receiver _to, uint256 _x) external payable {\n        _to.setXAndSendEther{value: msg.value}(_x);\n    }\n\n    // 返回多个属性\n    function getXAndEther(\n        Receiver _to\n    ) external view returns (uint256, uint256) {\n        (uint256 _x, uint256 _value) = _to.getXAndEther();\n        return (_x, _value);\n    }\n}\n// 0xd9145CCE52D386f254917e481eB44e9943F39138\ncontract Receiver {\n    uint256 public x;\n    uint256 public value = 123;\n\n    // 设置\n    function setX(uint256 _x) external returns (uint256) {\n        x = _x;\n        return x;\n    }\n\n    // 获取\n    function getX() external view returns (uint256) {\n        return x;\n    }\n\n    // 设置+发送ETH\n    function setXAndSendEther(uint256 _x) external payable {\n        x = _x;\n        value = msg.value;\n    }\n\n    // 获取多个属性\n    function getXAndEther() external view returns (uint256, uint256) {\n        return (x, value);\n    }\n}\n",
+        "file": "contracts/三W金融支付/CallerReceiver.sol"
+      }
+    }
+  },
+  "contracts/三W金融支付/SendETH.sol": {
+    "__sources__": {
+      "contracts/三W金融支付/SendETH.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\n\n// ✅ 现在行业标准：只用 call\n// ❌ transfer 和 send 基本废弃了\n\n// 方法\t转账失败\t传递 Gas\t安全性\t现在还能用吗\n// transfer\t自动回滚\t固定 2300\t低\t❌ 不推荐\n// send\t返回 bool\t固定 2300\t低\t❌ 不推荐\n// call\t返回 bool\t传递 所有 Gas\t高\t✅ 强烈推荐\n\n\n// 你用这三个方法转钱时：\n// transfer / send → 只带 2300 gas → 触发 receive()\n// call → 带所有 gas → 触发 receive() 或 fallback()\n\n\n\n// 发送者\ncontract SendEther {\n    // 构造函数\n    constructor() payable {}\n\n    receive() external payable { }\n\n    // transfer\n    function sendViaTransfer(address payable _to) external payable {\n        _to.transfer(123);\n    }\n\n    // send 不常用\n    function sendViaSend(address payable _to) external payable {\n        bool send = _to.send(123);\n        require(send, \"send failed\");\n    }\n\n    // call\n    function sendViaCall(address payable _to) external payable {\n        (bool success, ) = _to.call{value: 123}(\"\");\n        require(success, \"send failed\");\n    }\n}\n\n// 接收者\ncontract EthReciver {\n    event Log(address sender, uint amount, uint gas);\n\n    receive() external payable {\n        emit Log(msg.sender, msg.value, gasleft());\n    }\n}\n",
+        "file": "contracts/三W金融支付/SendETH.sol"
+      }
+    }
+  },
+  "contracts/三W高级合约交互/Call.sol": {
+    "__sources__": {
+      "contracts/三W高级合约交互/Call.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\n\ncontract TestCall {\n    string public message;\n    uint public x;\n\n    event Log(address sender, uint256 amount, string message);\n\n    receive() external payable {}\n\n    fallback() external payable {\n        emit Log(msg.sender, msg.value, \"fallback was called\");\n    }\n\n    function foo(\n        uint256 _x,\n        string memory _message\n    ) external payable returns (bool, uint) {\n        // emit Log(msg.sender, msg.value, \"seccess \");\n        x = _x;\n        message = _message;\n        return (true, 1);\n    }\n}\n\ncontract Call {\n    bytes public i;\n    function callFoo(address _target) external payable {\n        (bool b, bytes memory _i) = _target.call{value: 111}(\n            abi.encodeWithSignature(\"foo(uint256,string)\", 123, \"call foo\")\n        );\n        require(b, \"call foo failed\");\n        i = _i;\n    }\n}\n",
+        "file": "contracts/三W高级合约交互/Call.sol"
+      }
+    }
+  },
+  "contracts/三W高级合约交互/0609Call.sol": {
+    "__sources__": {
+      "contracts/三W高级合约交互/0609Call.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\n\ncontract TestCall {\n    string public message;\n    uint public x;\n\n    event Log(address sender, uint256 amount, string message);\n\n    receive() external payable {}\n\n    fallback() external payable {\n        emit Log(msg.sender, msg.value, \"fallback was called\");\n    }\n\n    function foo(\n        uint256 _x,\n        string memory _message\n    ) external payable returns (bool, uint) {\n        // emit Log(msg.sender, msg.value, \"seccess \");\n        x = _x;\n        message = _message;\n        return (true, 1);\n    }\n}\n\ncontract Call {\n    bytes public i;\n\n    // 调用给足ETH\n    function callFoo(address _target) external payable {\n        // {value: 111}  合约必须存在数据\n        (bool b, bytes memory _i) = _target.call{value: 111}(\n            abi.encodeWithSignature(\"foo(uint256,string)\", 123, \"call foo\")\n        );\n        require(b, \"call foo failed\");\n        i = _i;\n    }\n\n    // 调用不存在的方法 会调用 fallback \n    function callNotExist(address _target) external {\n        (bool b, ) = _target.call(abi.encodeWithSignature(\"callNotExist()\"));\n        require(b, \"call foo failed\");\n    }\n}\n",
+        "file": "contracts/三W高级合约交互/0609Call.sol"
       }
     }
   }

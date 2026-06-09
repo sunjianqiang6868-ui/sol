@@ -6,17 +6,6 @@
 	"output": {
 		"abi": [
 			{
-				"inputs": [
-					{
-						"internalType": "string",
-						"name": "_name",
-						"type": "string"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "constructor"
-			},
-			{
 				"anonymous": false,
 				"inputs": [
 					{
@@ -31,15 +20,16 @@
 			},
 			{
 				"inputs": [],
-				"name": "name",
-				"outputs": [
-					{
-						"internalType": "string",
-						"name": "",
-						"type": "string"
-					}
-				],
-				"stateMutability": "view",
+				"name": "bar",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "foo",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			}
 		],
@@ -56,7 +46,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/new/0524VirtualConstructor.sol": "E"
+			"contracts/0523/ParentVirtual.sol": "E"
 		},
 		"evmVersion": "shanghai",
 		"libraries": {},
@@ -64,18 +54,18 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": true,
+			"enabled": false,
 			"runs": 200
 		},
 		"remappings": []
 	},
 	"sources": {
-		"contracts/new/0524VirtualConstructor.sol": {
-			"keccak256": "0x92fadd09be574ddbcd685f4f6973ef4a1a59d96cab278e6d1ea56dfddcbc4501",
+		"contracts/0523/ParentVirtual.sol": {
+			"keccak256": "0x507506b78f53d2c8a09fd09166a21370d004d32878af48338006397203f27d9c",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://92cde494b685e717bf8fb717095aac891ee24b8331d8b90b377da6d32a1296e8",
-				"dweb:/ipfs/QmX9BHXmnygXYfyKAx7ewCR96YjPwVi7J6fAw3KYBKQdjx"
+				"bzz-raw://0f75728324e62ffc7d239744d5ab430678d541bb2fddca44462824e1a5b761f3",
+				"dweb:/ipfs/QmaScUnZ91pPSRMEZS6wMPi4pXd8j4AqAfMj1dbS5wBbuF"
 			]
 		}
 	},

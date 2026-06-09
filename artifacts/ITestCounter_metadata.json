@@ -6,28 +6,21 @@
 	"output": {
 		"abi": [
 			{
-				"anonymous": false,
-				"inputs": [
+				"inputs": [],
+				"name": "count",
+				"outputs": [
 					{
-						"indexed": false,
-						"internalType": "string",
-						"name": "message",
-						"type": "string"
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
 					}
 				],
-				"name": "Log",
-				"type": "event"
-			},
-			{
-				"inputs": [],
-				"name": "bar",
-				"outputs": [],
-				"stateMutability": "nonpayable",
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
 				"inputs": [],
-				"name": "foo",
+				"name": "increment",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -46,7 +39,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/0523/ParentVirtual.sol": "G"
+			"contracts/三W高级合约交互/MyContract.sol": "ITestCounter"
 		},
 		"evmVersion": "shanghai",
 		"libraries": {},
@@ -60,12 +53,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/0523/ParentVirtual.sol": {
-			"keccak256": "0x507506b78f53d2c8a09fd09166a21370d004d32878af48338006397203f27d9c",
+		"contracts/三W高级合约交互/MyContract.sol": {
+			"keccak256": "0xbe8b8bc81283d0d58fcbd416026be86e425e26cdee9db7a177d086d3a48b72ac",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://0f75728324e62ffc7d239744d5ab430678d541bb2fddca44462824e1a5b761f3",
-				"dweb:/ipfs/QmaScUnZ91pPSRMEZS6wMPi4pXd8j4AqAfMj1dbS5wBbuF"
+				"bzz-raw://7be286c03322c9f14f6389394cd8142a8c0e359a53f27c8debaa4caa7fa969a8",
+				"dweb:/ipfs/QmNY5i6c1LEcARVFSFqTh7nXdXA4cANbTjot3XHXYfD5Rz"
 			]
 		}
 	},

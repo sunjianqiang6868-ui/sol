@@ -1,0 +1,75 @@
+{
+	"compiler": {
+		"version": "0.8.23+commit.f704f362"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "gas",
+						"type": "uint256"
+					}
+				],
+				"name": "Log",
+				"type": "event"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "receive"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/三W金融支付/SendETH.sol": "EthReciver"
+		},
+		"evmVersion": "shanghai",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/三W金融支付/SendETH.sol": {
+			"keccak256": "0x7915fd65038ce8eac1f2cb2af613fe0d9c1d6bd58cc6b32d2f1ad09036a833b5",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://3d3b17bfb234a7fba525807b5bc1f60b3385af244275469d1393c33c0ea40ce5",
+				"dweb:/ipfs/QmRo6cJmnrW3uFFvk8iAL8XcxH5nr4pHn9PDtBH6evE1oJ"
+			]
+		}
+	},
+	"version": 1
+}

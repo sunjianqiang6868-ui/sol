@@ -46,7 +46,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/0523/ParentVirtual.sol": "G"
+			"contracts/0523/ParentVirtual.sol": "H"
 		},
 		"evmVersion": "shanghai",
 		"libraries": {},
