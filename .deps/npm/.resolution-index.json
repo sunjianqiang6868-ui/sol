@@ -240,5 +240,21 @@
         "file": "contracts/三W高级合约交互/0609Call.sol"
       }
     }
+  },
+  "contracts/三W高级合约交互/Delegate.sol": {
+    "__sources__": {
+      "contracts/三W高级合约交互/Delegate.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\n// Delegatecall 代理调用\n//  (bool success, ) = _delegate.delegatecall(\n//     abi.encodeWithSelector(A.setVar.selector, _num)\n// )\n// B 执行delegatecall 走Ad setVar 方法, 修改的B的全局变量\n\ncontract A {\n    uint public num;\n    address public sender;\n    uint public value;\n\n    function setVar(uint _num) public payable {\n        num = _num;\n        sender = msg.sender;\n        value = msg.value;\n    }\n}\n\ncontract B {\n    uint public num;\n    address public sender;\n    uint public value;\n\n    function setVar(address _delegate, uint _num) public payable {\n        (bool success, ) = _delegate.delegatecall(\n            abi.encodeWithSelector(A.setVar.selector, _num)\n        );\n        require(success, \" delegatecall failed\");\n    }\n}\n",
+        "file": "contracts/三W高级合约交互/Delegate.sol"
+      }
+    }
+  },
+  "contracts/三W高级合约交互/New.sol": {
+    "__sources__": {
+      "contracts/三W高级合约交互/New.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\n\ncontract Account {\n    address public bank;\n    address public owner;\n    constructor(address _owner) {\n        owner = _owner;\n        bank = msg.sender;\n    }\n}\n\ncontract AccnountFactory {\n    Account[] public accounts;\n\n    function createAccount(address _owner) external payable {\n        Account newAccount = new Account(_owner);\n        accounts.push(newAccount);\n    }\n}\n",
+        "file": "contracts/三W高级合约交互/New.sol"
+      }
+    }
   }
 }

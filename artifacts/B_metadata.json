@@ -7,41 +7,59 @@
 		"abi": [
 			{
 				"inputs": [],
-				"name": "barA",
+				"name": "num",
 				"outputs": [
 					{
-						"internalType": "string",
+						"internalType": "uint256",
 						"name": "",
-						"type": "string"
+						"type": "uint256"
 					}
 				],
-				"stateMutability": "pure",
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
 				"inputs": [],
-				"name": "barB",
+				"name": "sender",
 				"outputs": [
 					{
-						"internalType": "string",
+						"internalType": "address",
 						"name": "",
-						"type": "string"
+						"type": "address"
 					}
 				],
-				"stateMutability": "pure",
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_delegate",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_num",
+						"type": "uint256"
+					}
+				],
+				"name": "setVar",
+				"outputs": [],
+				"stateMutability": "payable",
 				"type": "function"
 			},
 			{
 				"inputs": [],
-				"name": "foo",
+				"name": "value",
 				"outputs": [
 					{
-						"internalType": "string",
+						"internalType": "uint256",
 						"name": "",
-						"type": "string"
+						"type": "uint256"
 					}
 				],
-				"stateMutability": "pure",
+				"stateMutability": "view",
 				"type": "function"
 			}
 		],
@@ -58,7 +76,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/new/0524VirtualLevel.sol": "B"
+			"contracts/三W高级合约交互/Delegate.sol": "B"
 		},
 		"evmVersion": "shanghai",
 		"libraries": {},
@@ -66,18 +84,18 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": true,
+			"enabled": false,
 			"runs": 200
 		},
 		"remappings": []
 	},
 	"sources": {
-		"contracts/new/0524VirtualLevel.sol": {
-			"keccak256": "0xfe6b827d9d2d1cfb1833a5b08e0d34d54f5256ab4438d9df9a9f9df9fde7410e",
+		"contracts/三W高级合约交互/Delegate.sol": {
+			"keccak256": "0x08ec4f81aa4a8bb2d0ceec4b867df1e1b6d17493b05f867716dd03ce7379ff6b",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://25fb4bd99c7df39ced71cf36bd2d3b3c29124cbeffa164ac75a863a7c79a59c6",
-				"dweb:/ipfs/QmZnxQFRYn2hAK6NebuqZPyMHnE2JNdPqPMvhda7VEnr2a"
+				"bzz-raw://ea8bc0dfe52cde557edcea68fcf19783fb4cf3be6f25db9a6fdb41d7b5c6f751",
+				"dweb:/ipfs/QmXEG4nkpkEcnKRWk1fMCc5wPfoDrpVcVdbTsKu6dL9shE"
 			]
 		}
 	},

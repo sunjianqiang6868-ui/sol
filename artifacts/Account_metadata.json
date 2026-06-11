@@ -6,21 +6,19 @@
 	"output": {
 		"abi": [
 			{
-				"inputs": [],
-				"name": "num",
-				"outputs": [
+				"inputs": [
 					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
+						"internalType": "address",
+						"name": "_owner",
+						"type": "address"
 					}
 				],
-				"stateMutability": "view",
-				"type": "function"
+				"stateMutability": "nonpayable",
+				"type": "constructor"
 			},
 			{
 				"inputs": [],
-				"name": "sender",
+				"name": "bank",
 				"outputs": [
 					{
 						"internalType": "address",
@@ -32,26 +30,13 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "_num",
-						"type": "uint256"
-					}
-				],
-				"name": "setVar",
-				"outputs": [],
-				"stateMutability": "payable",
-				"type": "function"
-			},
-			{
 				"inputs": [],
-				"name": "value",
+				"name": "owner",
 				"outputs": [
 					{
-						"internalType": "uint256",
+						"internalType": "address",
 						"name": "",
-						"type": "uint256"
+						"type": "address"
 					}
 				],
 				"stateMutability": "view",
@@ -71,7 +56,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/三W高级合约交互/Delegate.sol": "A"
+			"contracts/三W高级合约交互/New.sol": "Account"
 		},
 		"evmVersion": "shanghai",
 		"libraries": {},
@@ -85,12 +70,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/三W高级合约交互/Delegate.sol": {
-			"keccak256": "0x08ec4f81aa4a8bb2d0ceec4b867df1e1b6d17493b05f867716dd03ce7379ff6b",
+		"contracts/三W高级合约交互/New.sol": {
+			"keccak256": "0x758565c6d5a94a757587018fc5ccff996c864bdad87e1a1b4e86ffa590ca51c1",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://ea8bc0dfe52cde557edcea68fcf19783fb4cf3be6f25db9a6fdb41d7b5c6f751",
-				"dweb:/ipfs/QmXEG4nkpkEcnKRWk1fMCc5wPfoDrpVcVdbTsKu6dL9shE"
+				"bzz-raw://0922b4485976d21d774872e7955c075d734ea69d8ec4bbe96f41e6d32eb72b88",
+				"dweb:/ipfs/QmeA74w1D5wStZCUBpZ4r3K3Nd2tP7C445pNdqqLR19RSQ"
 			]
 		}
 	},
