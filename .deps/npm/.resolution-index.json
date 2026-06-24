@@ -256,5 +256,43 @@
         "file": "contracts/三W高级合约交互/New.sol"
       }
     }
+  },
+  "contracts/三W高级合约交互/Libray.sol": {
+    "__sources__": {}
+  },
+  "contracts/三W高级合约交互/Library.sol": {
+    "__sources__": {
+      "contracts/三W高级合约交互/Library.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\n\n// Solidity 合约数据分三大数据位置，最核心是 storage：\n// storage\n// 合约永久存储，存在区块链上，合约销毁前一直保留\n// 消耗 Gas 最高，读写成本大\n// 每个合约拥有独立存储空间，按「存储插槽（slot）」排列\n// memory\n// 临时内存，函数执行时存在，调用结束立即清空\n// 仅用于函数内临时变量，无持久化\n// calldata\n// 只读，存放函数入参，外部调用传入的数据，不能修改\n\n//---------------------------------------------\n// 修饰符\t调用范围\n// public\t外部账户、其他合约、本合约、子合约 都能调用\n// external\t仅外部账户 / 其他合约调用，本合约内部不能直接调用\n// internal\t本合约 + 继承的子合约 可调用；外部 / 其他合约无法调用\n// private\t仅当前合约内部可用；子合约、外部都不能用\n//==============================================\n\n// using 主要用于库绑定，给值类型 / 结构体挂载自定义方法，\n// 语法：using 库名 for 类型;，搭配库（library）使用，日常开发、省代码、简化调用高频用到。\n// 关键规则 & 限制\n// 只能搭配 library 使用\n// using 不能绑定普通合约，只能绑定库。\n// 库函数可见性\n// 绝大多数场景用 internal：内部调用、不生成外部函数、Gas 低。\n// 参数位置\n// 变量永远对应库函数第一个形参。\n// 不能给地址 / 合约类型滥用扩展\n// 语法允许，但工程上极少用，优先用于原生类型、结构体。\n// 作用域\n// 普通 using：仅当前合约有效\n// using ... global：全局生效（高版本编译器）\n\nlibrary Match {\n    function max(uint _x, uint _y) internal pure returns (uint) {\n        return _x >= _y ? _x : _y;\n    }\n}\n\ncontract Test {\n    function testMax(uint _x, uint _y) external pure returns (uint) {\n        // 直接调用\n        return Match.max(_x, _y);\n    }\n}\n\nlibrary ArrLib {\n    function find(uint[] storage arr, uint _x) internal view returns (uint) {\n        for (uint i; i <= arr.length - 1; i++) {\n            if (arr[i] == _x) {\n                return i;\n            }\n        }\n        revert(\"not find\");\n    }\n}\n\ncontract ArryTest {\n    using ArrLib for uint[];\n\n    uint[] public arr = [1, 2, 3, 4];\n\n    function testFind(uint _x) external view returns (uint) {\n        // 使用using\n        return arr.find(_x);\n    }\n}\n",
+        "file": "contracts/三W高级合约交互/Library.sol"
+      }
+    }
+  },
+  "contracts/四W安全性和验证/HashFunc.sol": {
+    "__sources__": {
+      "contracts/四W安全性和验证/HashFunc.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\n\n// abi.encode：标准安全编码，带长度与对齐，防碰撞，适合调用、验签；\n// abi.encodePacked：紧凑精简编码，无填充、省 Gas，但多参数易哈希碰撞，适合简单哈希、插槽计算。\n\ncontract HashFunc {\n    function hash(\n        string memory text,\n        uint num,\n        address addr\n    ) external pure returns (bytes32) {\n        return keccak256(abi.encodePacked(text, num, addr));\n    }\n\n    // 哈希碰撞风险 低\n    function encode(\n        string memory text1,\n        string memory text2\n    ) external pure returns (bytes32) {\n        return keccak256(abi.encode(text1, text2));\n    }\n\n    // 哈希碰撞风险 高\n    // hash 碰撞 用例 \"AAA\"+\"BBB\" =\"AA\"+\"ABBB\"\n    function encodePacked(\n        string memory text1,\n        string memory text2\n    ) external pure returns (bytes32) {\n        return keccak256(abi.encodePacked(text1, text2));\n    }\n\n    // 中间拼接参数 防止hash冲突\n    function encodePacked2(\n        string memory text1,\n        uint num,\n        string memory text2\n    ) external pure returns (bytes32) {\n        return keccak256(abi.encodePacked(text1, num, text2));\n    }\n}\n",
+        "file": "contracts/四W安全性和验证/HashFunc.sol"
+      }
+    }
+  },
+  "contracts/四W安全性和验证/02sig.sol": {
+    "__sources__": {
+      "contracts/四W安全性和验证/02sig.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\n\n// 验证签名\n\n// 调用 getMessageHash 获取消息的hash结果 = 0x9c97d796ed69b7e69790ae723f51163056db3d55a7a6a82065780460162d4812\n// 登录小狐狸签镖\n// F12 控制台 ethereum.enable() => log  [[PromiseState]]:\"fulfilled\"\n// account = \"0x24D4EeB6b95a525EE53C0d00173bD03f3677af3f\" (小狐狸 账户)\n// hash =\"0x9c97d796ed69b7e69790ae723f51163056db3d55a7a6a82065780460162d4812\" (getMessageHash 结果)\n// ethereum.request({method:\"personal_sign\",params:[account,hash]}) (发送请求,调用personal_sign方法,弹出小狐狸前名页面)\n// 点击 sign 获取结果:\n//Promise {<pending>}[[Prototype]]: Promisecatch: ƒ catch()constructor: ƒ Promise()finally: ƒ finally()then: ƒ then()Symbol(Symbol.toStringTag): \"Promise\"[[Prototype]]: Object[[PromiseState]]: \"fulfilled\"\n//[[PromiseResult]]: \"0xae470526ff995165cb3a42a261f7c5a583ff69bc5ca533df00c792dc1817e38620f54209a5c0a0a4899cd27da0ed9c3b820c6d52da810499b6460f325ea648621c\"\n\n\ncontract VerifySig {\n    function verify(\n        address _signer,\n        string memory _message,\n        bytes memory _sig\n    ) external pure returns (bool) {\n        //1. message Hash\n        bytes32 messageHash = getMessageHash(_message);\n\n        //2.\n        bytes32 ethSingedMessageHash = getEthSignedMessage(messageHash);\n\n        //3.\n        return recover(ethSingedMessageHash, _sig) == _signer;\n    }\n\n    // 1. return  0x9c97d796ed69b7e69790ae723f51163056db3d55a7a6a82065780460162d4812\n    function getMessageHash(\n        string memory _message\n    ) public pure returns (bytes32) {\n        return keccak256(abi.encodePacked(_message));\n    }\n\n    // 2.return  0x95a786464acc06fafc0d46036515722ec35acb840ecc291f251e086ebfeb9099\n    function getEthSignedMessage(\n        bytes32 messageHash\n    ) public pure returns (bytes32) {\n        return keccak256(abi.encodePacked(\"\\x19Ethereum Signed Message:\\n32\", messageHash));\n    }\n\n    // 3.return  0x24D4EeB6b95a525EE53C0d00173bD03f3677af3f\n    function recover(\n        bytes32 ethSingedMessageHash,\n        bytes memory _sig\n    ) public pure returns (address) {\n        (bytes32 r, bytes32 s, uint8 v) = _split(_sig);\n        return ecrecover(ethSingedMessageHash, v, r, s);\n    }\n\n    function _split(\n        bytes memory _sig\n    ) internal pure returns (bytes32 r, bytes32 s, uint8 v) {\n        require(_sig.length == 65, \" invalid signatrue length\");\n        assembly {\n            r := mload(add(_sig, 32))\n            s := mload(add(_sig, 64))\n            v := byte(0, mload(add(_sig, 96)))\n        }\n    }\n}\n",
+        "file": "contracts/四W安全性和验证/02sig.sol"
+      }
+    }
+  },
+  "contracts/四W安全性和验证/03AccessContor.sol": {
+    "__sources__": {}
+  },
+  "contracts/四W安全性和验证/03AccessControl.sol": {
+    "__sources__": {
+      "contracts/四W安全性和验证/03AccessControl.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.23;\n// 权限控制\n\ncontract AccessControl {\n    event GrantRole(address account, bytes32 role);\n    event RevokeRole(address account, bytes32 role);\n\n    // 权限映射表\n    mapping(bytes32 => mapping(address => bool)) public roles;\n\n    // 角色\n    // 0xdf8b4c520ffe197c5343c6f5aec59570151ef9a492f2c624fd45ddde6135ec42\n    bytes32 private constant ADMIN = keccak256(abi.encodePacked(\"ADMIN\"));\n    // 0x2db9fd3d099848027c2383d0a083396f6c41510d7acfd92adc99b6cffcf31e96\n    bytes32 private constant USER = keccak256(abi.encodePacked(\"USER\"));\n\n    // 角色映射\n    mapping(string => bytes32) public roleMapping;\n\n    // 装饰器\n    modifier onlyRole(bytes32 _role) {\n        require(roles[_role][msg.sender], \"not authorized\");\n        _;\n    }\n\n    // 初始管理角色\n    constructor() {\n        roleMapping[\"admin\"] = ADMIN;\n        roleMapping[\"user\"] = USER;\n\n        _grantRole(ADMIN, msg.sender);\n    }\n\n    // 给角色赋权\n    function _grantRole(bytes32 _role, address _account) internal {\n        roles[_role][_account] = true;\n        emit GrantRole(_account, _role);\n    }\n\n    // 赋权\n    function grantRole(\n        bytes32 _role,\n        address _account\n    ) external onlyRole(ADMIN) {\n        _grantRole(_role, _account);\n    }\n\n    // 撤销角色权限\n    function revokeRole(\n        bytes32 _role,\n        address _account\n    ) external onlyRole(ADMIN) {\n        roles[_role][_account] = false;\n        emit RevokeRole(_account, _role);\n    }\n\n    function getRoleBytes32(\n        string memory _role\n    ) external view returns (bytes32) {\n        return roleMapping[_role];\n    }\n\n}\n",
+        "file": "contracts/四W安全性和验证/03AccessControl.sol"
+      }
+    }
   }
 }
